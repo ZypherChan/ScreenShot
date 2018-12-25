@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/ZORO.ico</file>
+        <file>image/LUFFY.ico</file>
+        <file>image/BROOK.ico</file>
+        <file>image/comp.ico</file>
+        <file>image/mail.ico</file>
+        <file>image/add.ico</file>
+        <file>image/remove.ico</file>
+        <file>image/title.ico</file>
+        <file>image/add.png</file>
+        <file>image/remove.png</file>
+        <file>image/title.png</file>
+        <file>image/file.png</file>
+        <file>image/folder.png</file>
+        <file>image/copy.png</file>
+        <file>image/save.png</file>
+        <file>image/drawline.png</file>
+        <file>image/drawrect.png</file>
+        <file>image/drawellipse.png</file>
+        <file>image/drawtext.png</file>
+        <file>translation/qt_zh_CN.qm</file>
+    </qresource>
+</RCC>
