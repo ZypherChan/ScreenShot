@@ -80,6 +80,8 @@ private:
 
 	void showColorBar();
 
+	void hideColorBar();
+
 	/**
 	 * @brief: 初始化截屏大小的显示标签
 	 * @input: 
@@ -181,6 +183,7 @@ private:
 	QList<TextPaint*> _text_list;
 
 	ColorItem *_cur_coloritem;
+	QColor _pen_color;
 };
 
 #endif // SCREENVIEW_H

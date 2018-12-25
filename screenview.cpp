@@ -190,11 +190,13 @@ void ScreenView::drawLine()
 		_btn_drawRect->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
 		_btn_drawEllipse->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
 		_btn_drawText->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		showColorBar();
 	}
 	else
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWDRAG;
 		_btn_drawLine->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		hideColorBar();
 	}
 }
 
@@ -253,6 +255,7 @@ void ScreenView::colorItemChanged(const QColor &color)
 {
 	assert(_cur_coloritem);
 	_cur_coloritem->setColor(color);
+	_pen_color = color;
 }
 
 void ScreenView::colorSelection()
@@ -264,6 +267,7 @@ void ScreenView::colorSelection()
 	{
 		QColor color = dia.selectedColor();
 		_cur_coloritem->setColor(color);
+		_pen_color = color;
 	}
 }
 
@@ -283,6 +287,7 @@ void ScreenView::init()
 	_draw_flag = DrawStatus::WAITDRAW;
 	_curlocation = CursorLocation::INVALID;
 	_draw_edit_flag = DrawEditFlag::DRAWDRAG;
+	_pen_color = QColor(Qt::black);
 
 	QRect screenGeometry = QApplication::desktop()->screenGeometry(this);
 	_screen_width = screenGeometry.width();
@@ -397,6 +402,11 @@ void ScreenView::showColorBar()
 	qreal y = _shortArea.bottomRight().y() + _toolbar->height() + 6;
 	_colorbar->move(x, y);
 	_colorbar->setVisible(true);
+}
+
+void ScreenView::hideColorBar()
+{
+	_colorbar->setVisible(false);
 }
 
 void ScreenView::initLabel()
@@ -914,6 +924,7 @@ void ScreenView::mouseMoveEvent(QMouseEvent *event)
 					if (_ptS.x() > -1 && _ptS.y() > -1 && _line_list.size()>0)
 						_line_list.last().setP2(_ptE.toPoint());
 				}
+				update();
 				break;
 			case RIGHT:
 				DrawEditFlag::DRAWDRAG == _draw_edit_flag ? setCursor(Qt::SizeHorCursor) : setCursor(Qt::ForbiddenCursor);
@@ -931,7 +942,6 @@ void ScreenView::mouseMoveEvent(QMouseEvent *event)
 				break;
 			}
 		}
-		update();
 	}
 }
 
@@ -1010,7 +1020,6 @@ void ScreenView::paintEvent(QPaintEvent *event)
 		painter.drawPixmap(_shortArea, _fullPixmap, _shortArea);     //然后将矩形框中的半透明图像替换成原图
 		showToolBar();
 		showLabel();
-		showColorBar();
 		break;
 	}
 	default:
@@ -1020,21 +1029,21 @@ void ScreenView::paintEvent(QPaintEvent *event)
 	int size = _line_list.length();
 	for (int i = 0; i < size; i++)
 	{
-		painter.setPen(QPen(Qt::black, 2, Qt::SolidLine));
+		painter.setPen(QPen(_pen_color, 2, Qt::SolidLine));
 		painter.drawLine(_line_list[i]);
 	}
 
 	size = _rect_list.length();
 	for (int i = 0; i < size; i++)
 	{
-		painter.setPen(QPen(Qt::red, 2, Qt::SolidLine));
+		painter.setPen(QPen(_pen_color, 2, Qt::SolidLine));
 		painter.drawRect(_rect_list[i]);
 	}
 
 	size = _ellipse_list.length();
 	for (int i = 0; i < size; i++)
 	{
-		painter.setPen(QPen(Qt::blue, 2, Qt::SolidLine));
+		painter.setPen(QPen(_pen_color, 2, Qt::SolidLine));
 		painter.drawEllipse(_ellipse_list[i]);
 	}
 
