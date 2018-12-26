@@ -15,6 +15,9 @@
 #include <QLabel>
 #include <QColorDialog>
 
+static const QString s_normalStyle = QStringLiteral("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+static const QString s_pressStyle  = QStringLiteral("border:none;background-color:rgb(0, 122, 204);");
+
 ScreenView::ScreenView(QWidget *parent)
 	: QWidget(parent)
 {
@@ -186,16 +189,16 @@ void ScreenView::drawLine()
 	if (DrawEditFlag::DRAWLINE != _draw_edit_flag)
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWLINE;
-		_btn_drawLine->setStyleSheet("border:none;background-color:rgb(0, 122, 204);");
-		_btn_drawRect->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-		_btn_drawEllipse->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-		_btn_drawText->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		_btn_drawLine->setStyleSheet(s_pressStyle);
+		_btn_drawRect->setStyleSheet(s_normalStyle);
+		_btn_drawEllipse->setStyleSheet(s_normalStyle);
+		_btn_drawText->setStyleSheet(s_normalStyle);
 		showColorBar();
 	}
 	else
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWDRAG;
-		_btn_drawLine->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		_btn_drawLine->setStyleSheet(s_normalStyle);
 		hideColorBar();
 	}
 }
@@ -205,15 +208,17 @@ void ScreenView::drawRect()
 	if (DrawEditFlag::DRAWRECT != _draw_edit_flag)
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWRECT;
-		_btn_drawRect->setStyleSheet("border:none;background-color:rgb(0, 122, 204);");
-		_btn_drawLine->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-		_btn_drawEllipse->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-		_btn_drawText->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		_btn_drawRect->setStyleSheet(s_pressStyle);
+		_btn_drawLine->setStyleSheet(s_normalStyle);
+		_btn_drawEllipse->setStyleSheet(s_normalStyle);
+		_btn_drawText->setStyleSheet(s_normalStyle);
+		showColorBar();
 	}
 	else
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWDRAG;
-		_btn_drawRect->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		_btn_drawRect->setStyleSheet(s_normalStyle);
+		hideColorBar();
 	}
 }
 
@@ -222,15 +227,17 @@ void ScreenView::drawEllipse()
 	if (DrawEditFlag::DRAWCIRCLE != _draw_edit_flag)
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWCIRCLE;
-		_btn_drawEllipse->setStyleSheet("border:none;background-color:rgb(0, 122, 204);");
-		_btn_drawLine->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-		_btn_drawRect->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-		_btn_drawText->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		_btn_drawEllipse->setStyleSheet(s_pressStyle);
+		_btn_drawLine->setStyleSheet(s_normalStyle);
+		_btn_drawRect->setStyleSheet(s_normalStyle);
+		_btn_drawText->setStyleSheet(s_normalStyle);
+		showColorBar();
 	}
 	else
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWDRAG;
-		_btn_drawEllipse->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		_btn_drawEllipse->setStyleSheet(s_normalStyle);
+		hideColorBar();
 	}
 }
 
@@ -239,15 +246,17 @@ void ScreenView::drawTextStatus()
 	if (DrawEditFlag::DRAWTEXT != _draw_edit_flag)
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWTEXT;
-		_btn_drawText->setStyleSheet("border:none;background-color:rgb(0, 122, 204);");
-		_btn_drawLine->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-		_btn_drawRect->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-		_btn_drawEllipse->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		_btn_drawText->setStyleSheet(s_pressStyle);
+		_btn_drawLine->setStyleSheet(s_normalStyle);
+		_btn_drawRect->setStyleSheet(s_normalStyle);
+		_btn_drawEllipse->setStyleSheet(s_normalStyle);
+		showColorBar();
 	}
 	else
 	{
 		_draw_edit_flag = DrawEditFlag::DRAWDRAG;
-		_btn_drawText->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+		_btn_drawText->setStyleSheet(s_normalStyle);
+		hideColorBar();
 	}
 }
 
@@ -322,15 +331,15 @@ void ScreenView::initColorBar()
 	hBoxLayout1->setMargin(2);
 	hBoxLayout1->setSpacing(2);
 
-	connect(coloritem1_1, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem1_2, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem1_3, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem1_4, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem1_5, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem1_6, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem1_7, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem1_8, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem1_9, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_1,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_2,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_3,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_4,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_5,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_6,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_7,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_8,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem1_9,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
 	connect(coloritem1_10, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
 
 	ColorItem *coloritem2_1 = new ColorItem(QColor(255, 255, 255));
@@ -357,15 +366,15 @@ void ScreenView::initColorBar()
 	hBoxLayout2->setMargin(2);
 	hBoxLayout2->setSpacing(2);
 
-	connect(coloritem2_1, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem2_2, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem2_3, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem2_4, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem2_5, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem2_6, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem2_7, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem2_8, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
-	connect(coloritem2_9, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_1,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_2,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_3,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_4,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_5,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_6,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_7,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_8,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
+	connect(coloritem2_9,  SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
 	connect(coloritem2_10, SIGNAL(itemClicked(const QColor &)), this, SLOT(colorItemChanged(const QColor &)));
 
 	QVBoxLayout *vBoxLayout = new QVBoxLayout();
@@ -468,21 +477,17 @@ void ScreenView::initToolBar()
 	_btn_drawText->setToolTip(QStringLiteral("Ìí¼ÓÎÄ±¾"));
 
 	_toolbar->setStyleSheet("border:none;background-color: rgb(255, 255, 255);");
-	_btn_copy->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-	_btn_save->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-	_btn_drawLine->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-	_btn_drawRect->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-	_btn_drawEllipse->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
-	_btn_drawText->setStyleSheet("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
+	_btn_copy->setStyleSheet(s_normalStyle);
+	_btn_save->setStyleSheet(s_normalStyle);
+	_btn_drawLine->setStyleSheet(s_normalStyle);
+	_btn_drawRect->setStyleSheet(s_normalStyle);
+	_btn_drawEllipse->setStyleSheet(s_normalStyle);
+	_btn_drawText->setStyleSheet(s_normalStyle);
 	
-// 	QFrame *line = new QFrame(this);
-// 	line->setFrameShape(QFrame::VLine);
-// 	line->raise();
 	mainToolBarLayout->addWidget(_btn_drawLine);
 	mainToolBarLayout->addWidget(_btn_drawRect);
 	mainToolBarLayout->addWidget(_btn_drawEllipse);
 	mainToolBarLayout->addWidget(_btn_drawText);
-//	mainToolBarLayout->addWidget(line);
 	mainToolBarLayout->addWidget(_btn_save);
 	mainToolBarLayout->addWidget(_btn_copy);
 
@@ -762,7 +767,7 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 
 			CursorLocation curLocation = _curlocation;
 			Qt::CursorShape curshape = cursor().shape();
-			if (Qt::ForbiddenCursor == curshape/* || Qt::ArrowCursor == curshape*/)
+			if (Qt::ForbiddenCursor == curshape)
 				return;
 
 			switch (curLocation)
