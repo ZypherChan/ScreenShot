@@ -1,2 +1,2 @@
 # ScreenShot
-一个用qt开发的windows截图工具
+一个基于Qt5开发的windows截图工具
