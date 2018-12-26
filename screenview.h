@@ -94,6 +94,8 @@ private:
 
 	void showLabel();
 
+	void hideLabel();
+
 	/**
 	 * @brief: 初始化截屏工具条
 	 * @input: 
@@ -184,6 +186,8 @@ private:
 
 	ColorItem *_cur_coloritem;
 	QColor _pen_color;
+
+	bool _bIsDrawLineEnd;
 };
 
 #endif // SCREENVIEW_H

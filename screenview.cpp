@@ -286,6 +286,7 @@ void ScreenView::init()
 	_ptS.ry() = -10;
 	_ptE.rx() = -10;
 	_ptE.ry() = -10;
+	_bIsDrawLineEnd = false;
 
 	_line_list.clear();
 	_rect_list.clear();
@@ -441,6 +442,11 @@ void ScreenView::showLabel()
 	_label->adjustSize();
 	_label->move(x, y);
 	_label->setVisible(true);
+}
+
+void ScreenView::hideLabel()
+{
+	_label->setVisible(false);
 }
 
 void ScreenView::initToolBar()
@@ -794,6 +800,7 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 				switch (_draw_edit_flag)
 				{
 				case DRAWLINE:
+					_bIsDrawLineEnd = false;
 					_ptS.rx() = event->x();
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
@@ -866,16 +873,21 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 	{
 		if (DrawEditFlag::DRAWLINE == _draw_edit_flag)
 		{
-			assert(_line_list.size()!= 0);
-			_line_list.removeLast();
-			_ptS.setX(-10);
-			_ptS.setY(-10);
+			if (_line_list.size() != 0 && !_bIsDrawLineEnd)
+			{
+				_line_list.removeLast();
+				_ptS.setX(-10);
+				_ptS.setY(-10);
+				_bIsDrawLineEnd = true;
+			}
 		}
 		else
 		{
-			init();
-			hideToolBar();
-			update();
+// 			init();
+// 			hideToolBar();
+// 			hideColorBar();
+// 			hideLabel();
+// 			update();
 		}
 	}
 }
