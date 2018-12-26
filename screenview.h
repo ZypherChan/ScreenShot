@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QLabel>
 #include "struct.h"
+#include "LinePaint.h"
 #include "TextPaint.h"
 #include "ColorItem.h"
 
@@ -129,15 +130,6 @@ private:
 	void adjustShotScreen(QMouseEvent *event);
 
 	/**
-	 * @brief: 移动截屏上的线段标记
-	 * @input: 
-	 * @output: 
-	 * @author: ZypherChan
-	 * @date: 2018/12/13 22:00
-	 **/
-	void moveLineList(qreal dx, qreal dy);
-
-	/**
 	 * @brief: 绘制文本到截屏上
 	 * @input: 
 	 * @output: 
@@ -179,7 +171,7 @@ private:
 	QPushButton *_btn_drawText;
 	QLabel *_label;
 
-	QList<QLine> _line_list;
+	QList<LinePaint> _line_list;
 	QList<QRectF> _rect_list;
 	QList<QRectF> _ellipse_list;
 	QList<TextPaint*> _text_list;

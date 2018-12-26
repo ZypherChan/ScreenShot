@@ -706,21 +706,6 @@ void ScreenView::adjustShotScreen(QMouseEvent *event)
 	_shortArea.setBottomRight(pt_br);
 }
 
-void ScreenView::moveLineList(qreal dx, qreal dy)
-{
-	int size = _line_list.size();
-	for (int i = 0; i < size; i++)
-	{
-		QPoint pt1 = _line_list[i].p1();
-		QPoint pt2 = _line_list[i].p2();
-		pt1.setX(pt1.x() + dx);
-		pt1.setY(pt1.y() + dy);
-		pt2.setX(pt2.x() + dx);
-		pt2.setY(pt2.y() + dy);
-		_line_list[i].setPoints(pt1, pt2);
-	}
-}
-
 void ScreenView::drawText(QMouseEvent *event)
 {
 	int x = event->x();
@@ -805,7 +790,7 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
 					_ptE.ry() = event->y();
-					_line_list.append(QLine(_ptS.toPoint(), _ptE.toPoint()));
+					_line_list.append(LinePaint(QLine(_ptS.toPoint(), _ptE.toPoint()), QPen(_pen_color, 2, Qt::SolidLine)));
 					break;
 				case DRAWRECT:
 					_ptS.rx() = event->x();
@@ -1046,8 +1031,8 @@ void ScreenView::paintEvent(QPaintEvent *event)
 	int size = _line_list.length();
 	for (int i = 0; i < size; i++)
 	{
-		painter.setPen(QPen(_pen_color, 2, Qt::SolidLine));
-		painter.drawLine(_line_list[i]);
+		painter.setPen(_line_list[i].getPen());
+		painter.drawLine(_line_list[i].getLine());
 	}
 
 	size = _rect_list.length();
