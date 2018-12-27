@@ -797,7 +797,7 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
 					_ptE.ry() = event->y();
-					_rect_list.append(QRectF(_ptS.toPoint(), _ptE.toPoint()));
+					_rect_list.append(RectPaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, 2, Qt::SolidLine)));
 					break;
 				case DRAWCIRCLE:
 					_ptS.rx() = event->x();
@@ -1032,13 +1032,13 @@ void ScreenView::paintEvent(QPaintEvent *event)
 	for (int i = 0; i < size; i++)
 	{
 		painter.setPen(_line_list[i].getPen());
-		painter.drawLine(_line_list[i].getLine());
+		painter.drawLine(_line_list[i]);
 	}
 
 	size = _rect_list.length();
 	for (int i = 0; i < size; i++)
 	{
-		painter.setPen(QPen(_pen_color, 2, Qt::SolidLine));
+		painter.setPen(_rect_list[i].getPen());
 		painter.drawRect(_rect_list[i]);
 	}
 

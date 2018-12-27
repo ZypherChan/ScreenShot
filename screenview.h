@@ -6,6 +6,7 @@
 #include <QLabel>
 #include "struct.h"
 #include "LinePaint.h"
+#include "RectPaint.h"
 #include "TextPaint.h"
 #include "ColorItem.h"
 
@@ -172,7 +173,7 @@ private:
 	QLabel *_label;
 
 	QList<LinePaint> _line_list;
-	QList<QRectF> _rect_list;
+	QList<RectPaint> _rect_list;
 	QList<QRectF> _ellipse_list;
 	QList<TextPaint*> _text_list;
 
