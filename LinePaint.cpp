@@ -1,16 +1,15 @@
 #include "LinePaint.h"
 
-LinePaint::LinePaint(const QLine &line, const QPen &pen, QObject *parent/* = NULL*/)
-	: QObject(parent)
+LinePaint::LinePaint(const QLine &line, const QPen &pen)
+	: QLine(line)
 {
-	_line = line;
 	_pen = pen;
 }
 
-LinePaint::LinePaint(const LinePaint &linepaint)
+LinePaint::LinePaint(const QLine &line)
+	: QLine(line)
 {
-	_line = linepaint.getLine();
-	_pen = linepaint.getPen();
+
 }
 
 LinePaint::~LinePaint()
@@ -28,12 +27,3 @@ const QPen& LinePaint::getPen() const
 	return _pen;
 }
 
-void LinePaint::setP2(const QPoint &ap2)
-{
-	_line.setP2(ap2);
-}
-
-const QLine& LinePaint::getLine() const
-{
-	return _line;
-}
