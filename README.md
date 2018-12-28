@@ -3,3 +3,6 @@
 
 # 主界面 #
 ![](https://i.imgur.com/vyrzfUb.png)
+
+# 截屏操作 #
+![](https://i.imgur.com/aXkyjEV.gif)
