@@ -718,7 +718,7 @@ void ScreenView::drawText(QMouseEvent *event)
 	}
 
 	QPalette palette;
-	palette.setColor(QPalette::Text,Qt::red);
+	palette.setColor(QPalette::Text, _pen_color);
 	curText->setPalette(palette);
 	curText->setStyleSheet("background:transparent;border-width:0;border-style:outset");
 
@@ -804,7 +804,7 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
 					_ptE.ry() = event->y();
-					_ellipse_list.append(QRectF(_ptS.toPoint(), _ptE.toPoint()));
+					_ellipse_list.append(EllipsePaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, 2, Qt::SolidLine)));
 					break;
 				case DRAWTEXT:
 					drawText(event);
@@ -923,7 +923,7 @@ void ScreenView::mouseMoveEvent(QMouseEvent *event)
 				{
 					_ptE.setX(event->x());
 					_ptE.setY(event->y());
-					if (_ptS.x() > -1 && _ptS.y() > -1 && _line_list.size()>0)
+					if (!_bIsDrawLineEnd && _ptS.x() > -1 && _ptS.y() > -1 && _line_list.size()>0)
 						_line_list.last().setP2(_ptE.toPoint());
 				}
 				update();
@@ -1045,7 +1045,7 @@ void ScreenView::paintEvent(QPaintEvent *event)
 	size = _ellipse_list.length();
 	for (int i = 0; i < size; i++)
 	{
-		painter.setPen(QPen(_pen_color, 2, Qt::SolidLine));
+		painter.setPen(_ellipse_list[i].getPen());
 		painter.drawEllipse(_ellipse_list[i]);
 	}
 

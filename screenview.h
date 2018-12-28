@@ -10,6 +10,8 @@
 #include "TextPaint.h"
 #include "ColorItem.h"
 
+typedef RectPaint EllipsePaint;
+
 
 class ScreenView : public QWidget
 {
@@ -174,7 +176,7 @@ private:
 
 	QList<LinePaint> _line_list;
 	QList<RectPaint> _rect_list;
-	QList<QRectF> _ellipse_list;
+	QList<EllipsePaint> _ellipse_list;
 	QList<TextPaint*> _text_list;
 
 	ColorItem *_cur_coloritem;
