@@ -1,4 +1,5 @@
 # ScreenShot
+[![](https://img.shields.io/badge/Qt5-ScreenShot-brightgreen.svg)](https://www.qt.io)
 
 一个基于Qt5开发的windows截图工具（仿Snipaste界面）
 
