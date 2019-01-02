@@ -9,6 +9,7 @@
 #include "RectPaint.h"
 #include "TextPaint.h"
 #include "ColorItem.h"
+#include "PointSizeWidget.h"
 
 typedef RectPaint EllipsePaint;
 
