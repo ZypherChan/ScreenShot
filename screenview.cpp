@@ -17,6 +17,7 @@
 
 static const QString s_normalStyle = QStringLiteral("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
 static const QString s_pressStyle  = QStringLiteral("border:none;background-color:rgb(0, 122, 204);");
+const QPen penScreenShotBound = QPen(Qt::cyan, 5, Qt::SolidLine);
 
 ScreenView::ScreenView(QWidget *parent)
 	: QWidget(parent)
@@ -997,6 +998,7 @@ void ScreenView::keyPressEvent(QKeyEvent *event)
 void ScreenView::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
+	painter.setRenderHint(QPainter::Antialiasing, true); //设置渲染提示为消除锯齿
 
 	QPixmap tempmask(_screen_width, _screen_width);
 	tempmask.fill((QColor(0, 0, 0, 160)));
@@ -1009,7 +1011,7 @@ void ScreenView::paintEvent(QPaintEvent *event)
 		break;
 	case DRAWINIG:
 	{
-		painter.setPen(QPen(Qt::cyan, 4, Qt::SolidLine));
+		painter.setPen(penScreenShotBound);
 		painter.drawRect(_shortArea);
 		painter.drawPixmap(_shortArea, _fullPixmap, _shortArea);
 		showLabel();
@@ -1017,7 +1019,7 @@ void ScreenView::paintEvent(QPaintEvent *event)
 	}
 	case DRAWEND:
 	{
-		painter.setPen(QPen(Qt::cyan, 4, Qt::SolidLine));            //设置画笔形式
+		painter.setPen(penScreenShotBound);            //设置画笔形式
 		painter.drawRect(_shortArea);                                //然后绘制矩形框
 		painter.drawPixmap(_shortArea, _fullPixmap, _shortArea);     //然后将矩形框中的半透明图像替换成原图
 		showToolBar();

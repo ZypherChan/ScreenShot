@@ -182,7 +182,7 @@ private:
 	ColorItem *_cur_coloritem;
 	QColor _pen_color;
 
-	bool _bIsDrawLineEnd;
+	bool _bIsDrawLineEnd;//判断当前绘制线段是否结束
 };
 
 #endif // SCREENVIEW_H
