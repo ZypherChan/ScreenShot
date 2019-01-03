@@ -33,12 +33,13 @@ void PointSizeWidget::wheelEvent(QWheelEvent *event)
 	qreal rate = event->delta();
 	if (rate > 0)
 	{
-		_point_size > 16 ? _point_size=16 : _point_size++;
+		_point_size >= 16 ? _point_size=16 : _point_size++;
 	}
 	else
 	{
-		_point_size < 2 ? _point_size = 2 : _point_size--;
+		_point_size <= 2 ? _point_size = 2 : _point_size--;
 	}
+	emit wheelscrolled(_point_size);
 	update();
 }
 
@@ -46,5 +47,11 @@ void PointSizeWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 	painter.setBrush(QBrush(Qt::white));
-	painter.drawEllipse(_ptCenter, _point_size, _point_size);
+	painter.setPen(QPen(Qt::white));
+	painter.setRenderHint(QPainter::Antialiasing, true); //设置渲染提示为消除锯齿
+	int radius = _point_size * 0.7;
+	radius < 2 ? radius = 2 : radius;
+	painter.drawEllipse(_ptCenter, radius, radius);
+	QString tip = QStringLiteral("%1").arg(_point_size);
+	setToolTip(tip);
 }

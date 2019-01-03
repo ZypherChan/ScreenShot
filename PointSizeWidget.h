@@ -17,6 +17,9 @@ public:
 	void setPointSize(int point_size);
 	int getPointSize() const;
 
+signals:
+	void wheelscrolled(int point_size);
+
 protected:
 	void wheelEvent(QWheelEvent *event)		Q_DECL_OVERRIDE;
 	void paintEvent(QPaintEvent *event)		Q_DECL_OVERRIDE;
