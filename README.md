@@ -1,8 +1,9 @@
 # ScreenShot
 [![](https://img.shields.io/badge/Qt5-ScreenShot-brightgreen.svg)](https://www.qt.io)
 
-一个基于Qt5开发的windows截图工具（仿Snipaste界面）
+一个基于Qt5开发的windows截图工具
 
+----------
 # 主界面 #
 ![](https://i.imgur.com/vyrzfUb.png)
 
@@ -17,4 +18,6 @@
 
 
 ----------
-# 后续功能持续更新 #
+# 更新记录 #
+- 增加线条大小设置——2019/1/3 22:21:36 
+![](https://i.imgur.com/8DbQQfu.gif)
