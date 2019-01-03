@@ -70,6 +70,8 @@ public slots:
 	void colorItemChanged(const QColor &color);
 	void colorSelection();
 
+	void pointSizeChanged(int point_size);
+
 private:
 	void init();
 
@@ -182,6 +184,7 @@ private:
 
 	ColorItem *_cur_coloritem;
 	QColor _pen_color;
+	int _point_size;
 
 	bool _bIsDrawLineEnd;//判断当前绘制线段是否结束
 };

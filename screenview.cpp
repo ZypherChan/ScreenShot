@@ -14,6 +14,7 @@
 #include <QFontMetrics>
 #include <QLabel>
 #include <QColorDialog>
+#include <QSplitter>
 
 static const QString s_normalStyle = QStringLiteral("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
 static const QString s_pressStyle  = QStringLiteral("border:none;background-color:rgb(0, 122, 204);");
@@ -281,6 +282,11 @@ void ScreenView::colorSelection()
 	}
 }
 
+void ScreenView::pointSizeChanged(int point_size)
+{
+	_point_size = point_size;
+}
+
 void ScreenView::init()
 {
 	_ptS.rx() = -10;
@@ -299,6 +305,7 @@ void ScreenView::init()
 	_curlocation = CursorLocation::INVALID;
 	_draw_edit_flag = DrawEditFlag::DRAWDRAG;
 	_pen_color = QColor(Qt::black);
+	_point_size = 2;
 
 	QRect screenGeometry = QApplication::desktop()->screenGeometry(this);
 	_screen_width = screenGeometry.width();
@@ -386,15 +393,18 @@ void ScreenView::initColorBar()
 	vBoxLayout->addLayout(hBoxLayout2);
 
 	_cur_coloritem = new ColorItem(QColor(0, 0, 0), 2 * ITEM_LENGTH + 2);
-	QVBoxLayout *vBoxLayout1 = new QVBoxLayout();
-	vBoxLayout1->addWidget(_cur_coloritem);
-	vBoxLayout1->setMargin(1);
-	vBoxLayout1->setSpacing(0);
+	PointSizeWidget *pointSizeWidget = new PointSizeWidget();
+	QHBoxLayout *hBoxLayout = new QHBoxLayout();
+	hBoxLayout->addWidget(pointSizeWidget);
+	hBoxLayout->addWidget(_cur_coloritem);
+	hBoxLayout->setMargin(1);
+	hBoxLayout->setSpacing(2);
 
 	connect(_cur_coloritem, SIGNAL(clicked()), this, SLOT(colorSelection()));
+	connect(pointSizeWidget, SIGNAL(wheelscrolled(int)), this, SLOT(pointSizeChanged(int)));
 
 	QHBoxLayout *mainBoxLayout = new QHBoxLayout();
-	mainBoxLayout->addLayout(vBoxLayout1);
+	mainBoxLayout->addLayout(hBoxLayout);
 	mainBoxLayout->addLayout(vBoxLayout);
 	mainBoxLayout->setMargin(2);
 	mainBoxLayout->setSpacing(2);
@@ -791,21 +801,21 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
 					_ptE.ry() = event->y();
-					_line_list.append(LinePaint(QLine(_ptS.toPoint(), _ptE.toPoint()), QPen(_pen_color, 2, Qt::SolidLine)));
+					_line_list.append(LinePaint(QLine(_ptS.toPoint(), _ptE.toPoint()), QPen(_pen_color, _point_size, Qt::SolidLine)));
 					break;
 				case DRAWRECT:
 					_ptS.rx() = event->x();
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
 					_ptE.ry() = event->y();
-					_rect_list.append(RectPaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, 2, Qt::SolidLine)));
+					_rect_list.append(RectPaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, _point_size, Qt::SolidLine)));
 					break;
 				case DRAWCIRCLE:
 					_ptS.rx() = event->x();
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
 					_ptE.ry() = event->y();
-					_ellipse_list.append(EllipsePaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, 2, Qt::SolidLine)));
+					_ellipse_list.append(EllipsePaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, _point_size, Qt::SolidLine)));
 					break;
 				case DRAWTEXT:
 					drawText(event);
