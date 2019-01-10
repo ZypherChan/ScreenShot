@@ -6,7 +6,6 @@
 #include <Qpainter>
 #include <Qboxlayout>
 #include <Qpushbutton>
-#include <assert.h>
 #include <Qscreen>
 #include <QClipboard>
 #include <QDateTime>
@@ -18,6 +17,7 @@
 
 static const QString s_normalStyle = QStringLiteral("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
 static const QString s_pressStyle  = QStringLiteral("border:none;background-color:rgb(0, 122, 204);");
+static const QString s_brushStyle = QStringLiteral("border:none;background-color:rgb(255, 255, 255);");
 const QPen penScreenShotBound = QPen(Qt::cyan, 5, Qt::SolidLine);
 
 ScreenView::ScreenView(QWidget *parent)
@@ -264,9 +264,11 @@ void ScreenView::drawTextStatus()
 
 void ScreenView::colorItemChanged(const QColor &color)
 {
-	assert(_cur_coloritem);
+	Q_ASSERT(_cur_coloritem);
 	_cur_coloritem->setColor(color);
 	_pen_color = color;
+	if(_bIsBrushed)
+		_brush.setColor(_pen_color);
 }
 
 void ScreenView::colorSelection()
@@ -287,6 +289,23 @@ void ScreenView::pointSizeChanged(int point_size)
 	_point_size = point_size;
 }
 
+void ScreenView::btnBrushClicked()
+{
+	if(!_bIsBrushed)
+	{
+		_brush.setStyle(Qt::SolidPattern);
+		_brush.setColor(_pen_color);
+		_btn_brush->setStyleSheet(s_pressStyle);
+		_bIsBrushed = true;
+	}
+	else
+	{
+		_brush.setStyle(Qt::NoBrush);
+		_btn_brush->setStyleSheet(s_brushStyle);
+		_bIsBrushed = false;
+	}
+}
+
 void ScreenView::init()
 {
 	_ptS.rx() = -10;
@@ -294,6 +313,7 @@ void ScreenView::init()
 	_ptE.rx() = -10;
 	_ptE.ry() = -10;
 	_bIsDrawLineEnd = false;
+	_bIsBrushed = false;
 
 	_line_list.clear();
 	_rect_list.clear();
@@ -392,16 +412,24 @@ void ScreenView::initColorBar()
 	vBoxLayout->addLayout(hBoxLayout1);
 	vBoxLayout->addLayout(hBoxLayout2);
 
+	_btn_brush = new QPushButton();
+	_btn_brush->setFixedSize(2 * ITEM_LENGTH + 2, 2 * ITEM_LENGTH + 2);
+	_btn_brush->setIcon(QPixmap(":/image/brush.png"));
+	_btn_brush->setToolTip(QStringLiteral("Моід"));
+	_btn_brush->setStyleSheet(s_brushStyle);
+
 	_cur_coloritem = new ColorItem(QColor(0, 0, 0), 2 * ITEM_LENGTH + 2);
 	PointSizeWidget *pointSizeWidget = new PointSizeWidget();
 	QHBoxLayout *hBoxLayout = new QHBoxLayout();
 	hBoxLayout->addWidget(pointSizeWidget);
+	hBoxLayout->addWidget(_btn_brush);
 	hBoxLayout->addWidget(_cur_coloritem);
 	hBoxLayout->setMargin(1);
 	hBoxLayout->setSpacing(2);
 
 	connect(_cur_coloritem, SIGNAL(clicked()), this, SLOT(colorSelection()));
 	connect(pointSizeWidget, SIGNAL(wheelscrolled(int)), this, SLOT(pointSizeChanged(int)));
+	connect(_btn_brush, SIGNAL(clicked()), this, SLOT(btnBrushClicked()));
 
 	QHBoxLayout *mainBoxLayout = new QHBoxLayout();
 	mainBoxLayout->addLayout(hBoxLayout);
@@ -418,7 +446,7 @@ void ScreenView::initColorBar()
 
 void ScreenView::showColorBar()
 {
-	assert(_colorbar);
+	Q_ASSERT(_colorbar);
 	qreal x = _shortArea.topLeft().x();
 	qreal y = _shortArea.bottomRight().y() + _toolbar->height() + 6;
 	_colorbar->move(x, y);
@@ -443,7 +471,7 @@ void ScreenView::initLabel()
 
 void ScreenView::showLabel()
 {
-	assert(_label);
+	Q_ASSERT(_label);
 	qreal x = _shortArea.topLeft().x();
 	qreal y = _shortArea.topLeft().y() - _label->height() - 2;
 	qreal w = _shortArea.width();
@@ -526,7 +554,7 @@ void ScreenView::initToolBar()
 
 void ScreenView::showToolBar()
 {
-	assert(_toolbar);
+	Q_ASSERT(_toolbar);
 	qreal x = _shortArea.topLeft().x();
 	qreal y = _shortArea.bottomRight().y()+4;
 	_toolbar->move(x, y);
@@ -536,7 +564,7 @@ void ScreenView::showToolBar()
 
 void ScreenView::hideToolBar()
 {
-	assert(_toolbar);
+	Q_ASSERT(_toolbar);
 	_toolbar->setVisible(false);
 }
 
@@ -808,14 +836,14 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
 					_ptE.ry() = event->y();
-					_rect_list.append(RectPaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, _point_size, Qt::SolidLine)));
+					_rect_list.append(RectPaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, _point_size, Qt::SolidLine), _brush));
 					break;
 				case DRAWCIRCLE:
 					_ptS.rx() = event->x();
 					_ptS.ry() = event->y();
 					_ptE.rx() = event->x();
 					_ptE.ry() = event->y();
-					_ellipse_list.append(EllipsePaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, _point_size, Qt::SolidLine)));
+					_ellipse_list.append(EllipsePaint(_ptS.toPoint(), _ptE.toPoint(), QPen(_pen_color, _point_size, Qt::SolidLine), _brush));
 					break;
 				case DRAWTEXT:
 					drawText(event);
@@ -1051,6 +1079,7 @@ void ScreenView::paintEvent(QPaintEvent *event)
 	for (int i = 0; i < size; i++)
 	{
 		painter.setPen(_rect_list[i].getPen());
+		painter.setBrush(_rect_list[i].getBrush());
 		painter.drawRect(_rect_list[i]);
 	}
 
@@ -1058,6 +1087,7 @@ void ScreenView::paintEvent(QPaintEvent *event)
 	for (int i = 0; i < size; i++)
 	{
 		painter.setPen(_ellipse_list[i].getPen());
+		painter.setBrush(_ellipse_list[i].getBrush());
 		painter.drawEllipse(_ellipse_list[i]);
 	}
 

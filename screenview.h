@@ -72,6 +72,8 @@ public slots:
 
 	void pointSizeChanged(int point_size);
 
+	void btnBrushClicked();
+
 private:
 	void init();
 
@@ -175,6 +177,7 @@ private:
 	QPushButton *_btn_drawRect;
 	QPushButton *_btn_drawEllipse;
 	QPushButton *_btn_drawText;
+	QPushButton *_btn_brush;
 	QLabel *_label;
 
 	QList<LinePaint> _line_list;
@@ -184,9 +187,11 @@ private:
 
 	ColorItem *_cur_coloritem;
 	QColor _pen_color;
+	QBrush _brush;
 	int _point_size;
 
 	bool _bIsDrawLineEnd;//判断当前绘制线段是否结束
+	bool _bIsBrushed;//判断当前是否填充模式
 };
 
 #endif // SCREENVIEW_H
