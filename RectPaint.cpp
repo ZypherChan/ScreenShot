@@ -5,10 +5,10 @@ RectPaint::RectPaint()
 
 }
 
-RectPaint::RectPaint(const QPointF &topLeft, const QPointF &bottomRight, const QPen &pen)
-	:QRectF(topLeft, bottomRight)
+RectPaint::RectPaint(const QPointF &topLeft, const QPointF &bottomRight, const QPen &pen, const QBrush &brush)
+	:QRectF(topLeft, bottomRight), _pen(pen),_brush(brush)
 {
-	_pen = pen;
+
 }
 
 RectPaint::RectPaint(const QRectF &rect)
@@ -30,5 +30,15 @@ void RectPaint::setPen(const QPen &pen)
 const QPen& RectPaint::getPen() const
 {
 	return _pen;
+}
+
+void RectPaint::setBrush(const QBrush &brush)
+{
+	_brush = brush;
+}
+
+const QBrush& RectPaint::getBrush() const
+{
+	return _brush;
 }
 
