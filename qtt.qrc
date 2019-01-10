@@ -20,5 +20,6 @@
         <file>image/drawellipse.png</file>
         <file>image/drawtext.png</file>
         <file>translation/qt_zh_CN.qm</file>
+        <file>image/brush.png</file>
     </qresource>
 </RCC>
