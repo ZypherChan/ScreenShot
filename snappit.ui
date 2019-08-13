@@ -67,32 +67,6 @@
         <string>截屏</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_copy">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>75</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>复制</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_save">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>100</y>
-         <width>75</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>保存</string>
-       </property>
-      </widget>
      </widget>
      <widget class="QWidget" name="tab_config">
       <attribute name="title">

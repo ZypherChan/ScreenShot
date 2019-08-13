@@ -9,7 +9,6 @@ int main(int argc, char *argv[])
 	QTranslator *pQTranslator = new QTranslator(&w);
 	pQTranslator->load(":/translation/qt_zh_CN.qm");
 	QCoreApplication::installTranslator(pQTranslator);
-	w.show();
 
 	return a.exec();
 }

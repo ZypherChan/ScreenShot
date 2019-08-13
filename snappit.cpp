@@ -7,16 +7,34 @@
 #include <QMouseEvent>
 #include <QBitmap>
 
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
 snappit::snappit(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
 	logInit();
+	LOG(INFO) << "snappit::snappit()";
 	_file_path = QStringLiteral(".");
 
-	connect(ui.pushButton_open, SIGNAL(clicked()), this, SLOT(openImage()));
-	connect(ui.pushButton_shortcut, SIGNAL(clicked()), this, SLOT(screenShotCut()));
-	LOG(INFO) << "snappit::snappit()";
+	m_tray = new QSystemTrayIcon(QIcon(":/image/main.ico"), this);
+	m_tray->setToolTip(tr("Snappit"));
+	m_tray->show();
+	m_tray->showMessage(tr(""), tr("Snappit"));
+
+	m_trayMenu = new QMenu();
+	m_trayMenu->addAction(tr("首选项"));
+	m_trayMenu->addAction(tr("退出"));
+	m_tray->setContextMenu(m_trayMenu);
+
+	ui.pushButton_shortcut->setShortcut(QKeySequence(QLatin1String("F1")));
+
+	connect(ui.pushButton_open,     &QPushButton::clicked, this, &snappit::openImage);
+	connect(ui.pushButton_shortcut, &QPushButton::clicked, this, &snappit::screenShotCut);
+	connect(m_trayMenu, &QMenu::triggered, this, &snappit::trayMenuTrigged);
+	connect(m_tray, &QSystemTrayIcon::activated, this, &snappit::trayActivated);
 }
 
 void snappit::logInit()
@@ -60,7 +78,6 @@ void snappit::openImage()
 		QFileInfo file(img_path);
 		_file_path = file.absolutePath();
 		LOG(INFO) << img_path.toLocal8Bit().constData();
-
 		QImage img(img_path);
 		QGraphicsScene *scene = new QGraphicsScene;
 		scene->addPixmap(QPixmap::fromImage(img));
@@ -82,8 +99,49 @@ void snappit::screenShotCut()
 }
 
 
+void snappit::trayMenuTrigged(QAction* action)
+{
+	QString text = action->text();
+	if (text == tr("首选项"))
+	{
+		this->hide();
+		this->setWindowFlags(Qt::WindowStaysOnTopHint);
+		this->show();
+	}
+	else if (text == tr("退出"))
+	{
+		exit(0);
+	}
+}
+
+void snappit::trayActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	switch (reason)
+	{
+	case QSystemTrayIcon::Trigger:
+		this->hide();
+		this->setWindowFlags(Qt::WindowStaysOnTopHint);
+		this->show();
+		break;
+	default:
+		break;
+	}
+}
+
+void snappit::hideEvent(QHideEvent *event)
+{
+	if (m_tray->isVisible())
+	{
+		this->hide();
+		event->ignore();
+	}
+}
+
 void snappit::closeEvent(QCloseEvent *event)
 {
-	//to do
-	QWidget::closeEvent(event);
+	if (m_tray->isVisible())
+	{
+		this->hide(); //隐藏窗口
+		event->ignore(); //忽略事件
+	}
 }
