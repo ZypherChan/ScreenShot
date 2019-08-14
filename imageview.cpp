@@ -3,10 +3,11 @@
 #include <QWheelEvent>
 #include <QMenu>
 #include <QScrollBar>
+#include "QPainter"
 #define EPS 1.0e-6
 
 ImageView::ImageView(QWidget *parent)
-	: QGraphicsView  (parent)
+	: QWidget(parent)
 {
 	initParam();
 	initUI();
@@ -14,6 +15,12 @@ ImageView::ImageView(QWidget *parent)
 ImageView::~ImageView()
 {
 
+}
+
+void ImageView::setImage(const QString& imagepath)
+{
+	m_pix = QPixmap(imagepath);
+	resize(m_pix.width(), m_pix.height());
 }
 
 void ImageView::initParam()
@@ -24,8 +31,6 @@ void ImageView::initParam()
 
 void ImageView::initUI()
 {
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 	setStyleSheet("border-width:0;border-style:outset");
 }
@@ -33,6 +38,8 @@ void ImageView::initUI()
 
 void ImageView::wheelEvent(QWheelEvent *event)
 {
+	if (!this->underMouse())
+		return;
 	qreal rate = event->delta();
 	int new_scale = m_current_scale;
 	if(rate > 0)
@@ -51,7 +58,6 @@ void ImageView::updateZoomLevel()
 		return;
 
 	resize(width()*m_zoomLevel, height()*m_zoomLevel);
-	scale(m_zoomLevel, m_zoomLevel);
 }
 
 void ImageView::mousePressEvent(QMouseEvent *event)
@@ -94,4 +100,12 @@ void ImageView::mouseReleaseEvent(QMouseEvent *event)
 	event->ignore();
 
 	m_bPressed = false;
+}
+
+void ImageView::paintEvent(QPaintEvent *event)
+{
+	QPainter painter(this);
+	painter.setRenderHint(QPainter::Antialiasing, true);
+	QRect rect = this->rect();
+	painter.drawPixmap(rect, m_pix);
 }

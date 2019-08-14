@@ -914,6 +914,15 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 // 			update();
 		}
 	}
+	else if (event->button() &Qt::MiddleButton)
+	{
+// 		screenCapture(_shortArea);
+// 		ScreenView *screenView = new ScreenView();
+// 		QPixmap pix = _shotPixmap;
+// 		screenView->setBackGroundPixmap(pix);
+// 		screenView->show();
+// 		close();
+	}
 }
 
 void ScreenView::mouseMoveEvent(QMouseEvent *event)

@@ -1,18 +1,24 @@
 #include "snappit.h"
 #include <QFileDialog>
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
 #include <QScreen>
 #include <QMouseEvent>
 #include <QBitmap>
+#include <QComboBox>
+#include "QTranslator"
+#include <Windows.h>
 
 #if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
 #endif
 
+#define SHOWWINDOWTOP \
+::SetWindowPos(HWND(this->winId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);\
+::SetWindowPos(HWND(this->winId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);\
+this->show();\
+this->activateWindow();
+
 snappit::snappit(QWidget *parent)
-	: QWidget(parent)
+	: QWidget(parent), m_translator(nullptr)
 {
 	ui.setupUi(this);
 	logInit();
@@ -20,14 +26,20 @@ snappit::snappit(QWidget *parent)
 	_file_path = QStringLiteral(".");
 
 	m_tray = new QSystemTrayIcon(QIcon(":/image/main.ico"), this);
-	m_tray->setToolTip(tr("Snappit"));
+	m_tray->setToolTip(QStringLiteral("Snappit"));
 	m_tray->show();
-	m_tray->showMessage(tr(""), tr("Snappit"));
+	m_tray->showMessage(QStringLiteral(""), QStringLiteral("Snappit"));
 
-	m_trayMenu = new QMenu();
-	m_trayMenu->addAction(tr("首选项"));
-	m_trayMenu->addAction(tr("退出"));
+	m_trayMenu = new QMenu(this);
+	m_prefer = new QAction(tr("Preference"), m_trayMenu);
+	m_trayMenu->addAction(m_prefer);
+	m_quit = new QAction(tr("Quit"), m_trayMenu);
+	m_trayMenu->addAction(m_quit);
 	m_tray->setContextMenu(m_trayMenu);
+
+	QStringList languages;
+	languages << QStringLiteral("中文") << QStringLiteral("English");
+	ui.comboBox_langue->addItems(languages);
 
 	ui.pushButton_shortcut->setShortcut(QKeySequence(QLatin1String("F1")));
 
@@ -35,6 +47,7 @@ snappit::snappit(QWidget *parent)
 	connect(ui.pushButton_shortcut, &QPushButton::clicked, this, &snappit::screenShotCut);
 	connect(m_trayMenu, &QMenu::triggered, this, &snappit::trayMenuTrigged);
 	connect(m_tray, &QSystemTrayIcon::activated, this, &snappit::trayActivated);
+	connect(ui.comboBox_langue, &QComboBox::currentTextChanged, this, &snappit::switchLanguage);
 }
 
 void snappit::logInit()
@@ -52,6 +65,12 @@ void snappit::logInit()
 	FLAGS_colorlogtostderr = true;
 	FLAGS_max_log_size = 1024;
 	FLAGS_stop_logging_if_full_disk = true;
+}
+
+void snappit::languageTranslate()
+{
+	m_prefer->setText(tr("Preference"));
+	m_quit->setText(tr("Quit"));
 }
 
 snappit::~snappit()
@@ -72,18 +91,15 @@ snappit::~snappit()
 
 void snappit::openImage()
 {
-	QString img_path = QFileDialog::getOpenFileName(this, QStringLiteral("选择要打开的图片"), _file_path, "Image files (*.bmp *.jpg *.png);;All files (*.*)");
+	
+	QString img_path = QFileDialog::getOpenFileName(this, tr("Choose Image"), _file_path, "Image files (*.bmp *.jpg *.png);;All files (*.*)");
 	if(!img_path.isEmpty())
 	{
 		QFileInfo file(img_path);
 		_file_path = file.absolutePath();
 		LOG(INFO) << img_path.toLocal8Bit().constData();
-		QImage img(img_path);
-		QGraphicsScene *scene = new QGraphicsScene;
-		scene->addPixmap(QPixmap::fromImage(img));
 		ImageView *imgView = new ImageView();
-		imgView->setScene(scene);
-		imgView->resize(scene->width(), scene->height());
+		imgView->setImage(img_path);
 		imgView->show();
 		_arr_imgView.push_back(imgView);
 	}
@@ -91,6 +107,7 @@ void snappit::openImage()
 
 void snappit::screenShotCut()
 {
+	this->hide();
 	QScreen *screen = QGuiApplication::primaryScreen();
 	QPixmap fullPixmap = screen->grabWindow(0);
 	ScreenView *screenView = new ScreenView();
@@ -101,16 +118,13 @@ void snappit::screenShotCut()
 
 void snappit::trayMenuTrigged(QAction* action)
 {
-	QString text = action->text();
-	if (text == tr("首选项"))
+	if (action == m_prefer)
 	{
-		this->hide();
-		this->setWindowFlags(Qt::WindowStaysOnTopHint);
-		this->show();
+		SHOWWINDOWTOP;
 	}
-	else if (text == tr("退出"))
+	else if (action == m_quit)
 	{
-		exit(0);
+		qApp->exit();
 	}
 }
 
@@ -119,12 +133,30 @@ void snappit::trayActivated(QSystemTrayIcon::ActivationReason reason)
 	switch (reason)
 	{
 	case QSystemTrayIcon::Trigger:
-		this->hide();
-		this->setWindowFlags(Qt::WindowStaysOnTopHint);
-		this->show();
+		SHOWWINDOWTOP;
 		break;
 	default:
 		break;
+	}
+}
+
+void snappit::switchLanguage(const QString &text)
+{
+	if (text == QLatin1String("English"))
+	{
+		m_translator = new QTranslator();
+		m_translator->load(":/translation/qtt_en.qm");
+		qApp->installTranslator(m_translator);
+		ui.retranslateUi(this);
+		languageTranslate();
+	}
+	else
+	{
+		m_translator = new QTranslator();
+		m_translator->load(":/translation/qtt_zh.qm");
+		qApp->installTranslator(m_translator);
+		ui.retranslateUi(this);
+		languageTranslate();
 	}
 }
 

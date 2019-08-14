@@ -22,9 +22,11 @@ public:
 	void screenShotCut();
 	void trayMenuTrigged(QAction* action);
 	void trayActivated(QSystemTrayIcon::ActivationReason reason);
+	void switchLanguage(const QString &text);
 
 private:
 	void logInit();
+	void languageTranslate();
 
 protected:
 	void hideEvent(QHideEvent *event)     Q_DECL_OVERRIDE;
@@ -36,6 +38,9 @@ private:
 	QString _file_path;
 	QSystemTrayIcon *m_tray;
 	QMenu *m_trayMenu;
+	QAction *m_prefer;
+	QAction *m_quit;
+	QTranslator *m_translator;
 };
 
 #endif // SNAPPIT_H

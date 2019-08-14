@@ -6,9 +6,8 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	snappit w;
-	QTranslator *pQTranslator = new QTranslator(&w);
-	pQTranslator->load(":/translation/qt_zh_CN.qm");
-	QCoreApplication::installTranslator(pQTranslator);
+	w.switchLanguage("zh");
+	a.setQuitOnLastWindowClosed(false);
 
 	return a.exec();
 }

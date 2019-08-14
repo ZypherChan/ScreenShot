@@ -1,19 +1,22 @@
 #ifndef IMAGEVIEW_H
 #define IMAGEVIEW_H
 
-#include <QGraphicsview >
+#include <QWidget >
+#include "QImage"
 QT_BEGIN_NAMESPACE
 class QWheelEvent;
 QT_END_NAMESPACE
 
 
-class ImageView : public QGraphicsView  
+class ImageView : public QWidget  
 {
 	Q_OBJECT
 
 public:
 	ImageView(QWidget *parent = NULL);
 	~ImageView();
+
+	void setImage(const QString& imagepath);
 
 private:
 	int m_current_scale;
@@ -31,7 +34,11 @@ protected:
 	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
 	
+private:
+	QPixmap m_pix;
 };
 
 #endif // IMAGEVIEW_H

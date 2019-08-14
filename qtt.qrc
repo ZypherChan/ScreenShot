@@ -19,8 +19,9 @@
         <file>image/drawrect.png</file>
         <file>image/drawellipse.png</file>
         <file>image/drawtext.png</file>
-        <file>translation/qt_zh_CN.qm</file>
         <file>image/brush.png</file>
         <file>image/main.ico</file>
+        <file>translation/qtt_zh.qm</file>
+        <file>translation/qtt_en.qm</file>
     </qresource>
 </RCC>

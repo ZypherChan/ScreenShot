@@ -4,19 +4,19 @@
 
 TEMPLATE = app
 TARGET = qtt
-DESTDIR = ../Win32/Debug
+DESTDIR = ../Win32/Release
 QT += core sql gui widgets
-CONFIG += debug
+CONFIG += release
 DEFINES += WIN64 QT_DLL QT_WIDGETS_LIB QT_SQL_LIB GLOG_NO_ABBREVIATED_SEVERITIES GOOGLE_GLOG_DLL_DECL=
 INCLUDEPATH += ./GeneratedFiles \
     . \
     ./GeneratedFiles/$(ConfigurationName) \
     $(ProjectDir)/third party/glog/include
 LIBS += -L"$(ProjectDir)/third party/glog/lib/win32" \
-    -lglogd
+    -lglog
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/$(ConfigurationName)
-OBJECTS_DIR += debug
+OBJECTS_DIR += release
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(qtt.pri)
