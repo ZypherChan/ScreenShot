@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include "QTranslator"
 #include <Windows.h>
+#include "qxtglobalshortcut.h"
 
 #if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
@@ -40,9 +41,9 @@ snappit::snappit(QWidget *parent)
 	QStringList languages;
 	languages << QStringLiteral("ÖÐÎÄ") << QStringLiteral("English");
 	ui.comboBox_langue->addItems(languages);
-
-	ui.pushButton_shortcut->setShortcut(QKeySequence(QLatin1String("F1")));
-
+	
+	QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(QKeySequence(QLatin1String("F1")), this);
+	connect(shortcut, &QxtGlobalShortcut::activated, this, &snappit::screenShotCut);
 	connect(ui.pushButton_open,     &QPushButton::clicked, this, &snappit::openImage);
 	connect(ui.pushButton_shortcut, &QPushButton::clicked, this, &snappit::screenShotCut);
 	connect(m_trayMenu, &QMenu::triggered, this, &snappit::trayMenuTrigged);
