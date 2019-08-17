@@ -4,7 +4,10 @@
 #include <QMenu>
 #include <QScrollBar>
 #include "QPainter"
+#include <QGraphicsDropShadowEffect>
+
 #define EPS 1.0e-6
+const int kShadowBorderWidth = 6;
 
 ImageView::ImageView(QWidget *parent)
 	: QWidget(parent)
@@ -20,7 +23,19 @@ ImageView::~ImageView()
 void ImageView::setImage(const QString& imagepath)
 {
 	m_pix = QPixmap(imagepath);
-	resize(m_pix.width(), m_pix.height());
+	resize(m_pix.width() + kShadowBorderWidth * 2, m_pix.height() + kShadowBorderWidth * 2);
+}
+
+void ImageView::setImage(const QPixmap& pixmap)
+{
+	m_pix = pixmap;
+	resize(m_pix.width() + kShadowBorderWidth * 2, m_pix.height() + kShadowBorderWidth * 2);
+}
+
+void ImageView::setImageGeometry(const QRect& rect)
+{
+	setGeometry(rect.x() - kShadowBorderWidth, rect.y() - kShadowBorderWidth,
+		rect.width() + kShadowBorderWidth * 2, rect.height() + kShadowBorderWidth * 2);
 }
 
 void ImageView::initParam()
@@ -31,8 +46,8 @@ void ImageView::initParam()
 
 void ImageView::initUI()
 {
-	setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-	setStyleSheet("border-width:0;border-style:outset");
+	setWindowFlags(Qt::FramelessWindowHint | Qt::Tool /*| Qt::WindowStaysOnTopHint*/);
+	setAttribute(Qt::WA_TranslucentBackground, true);
 }
 
 
@@ -107,5 +122,19 @@ void ImageView::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	QRect rect = this->rect();
-	painter.drawPixmap(rect, m_pix);
+	painter.drawPixmap(kShadowBorderWidth, kShadowBorderWidth, 
+		width() - kShadowBorderWidth*2, height() - kShadowBorderWidth*2, m_pix);
+
+	QColor color(30 ,144 ,255);
+
+	for (int i = 0; i < kShadowBorderWidth; i++)
+	{
+		QPainterPath path;
+		path.setFillRule(Qt::WindingFill);
+		path.addRect(kShadowBorderWidth - i, kShadowBorderWidth - i, 
+			this->width() - (kShadowBorderWidth - i) * 2, this->height() - (kShadowBorderWidth - i) * 2);
+		color.setAlpha(50 - i * 10);
+		painter.setPen(color);
+		painter.drawPath(path);
+	}
 }

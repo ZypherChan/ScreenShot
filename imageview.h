@@ -17,6 +17,8 @@ public:
 	~ImageView();
 
 	void setImage(const QString& imagepath);
+	void setImage(const QPixmap& pixmap);
+	void setImageGeometry(const QRect& rect);
 
 private:
 	int m_current_scale;
