@@ -14,6 +14,7 @@
 #include <QLabel>
 #include <QColorDialog>
 #include <QSplitter>
+#include "imageview.h"
 
 static const QString s_normalStyle = QStringLiteral("QPushButton:hover{background-color: rgb(204, 206, 219);border:none;color:rgb(255, 255, 255);}");
 static const QString s_pressStyle  = QStringLiteral("border:none;background-color:rgb(0, 122, 204);");
@@ -905,23 +906,15 @@ void ScreenView::mousePressEvent(QMouseEvent *event)
 				_bIsDrawLineEnd = true;
 			}
 		}
-		else
-		{
-// 			init();
-// 			hideToolBar();
-// 			hideColorBar();
-// 			hideLabel();
-// 			update();
-		}
 	}
 	else if (event->button() &Qt::MiddleButton)
 	{
-// 		screenCapture(_shortArea);
-// 		ScreenView *screenView = new ScreenView();
-// 		QPixmap pix = _shotPixmap;
-// 		screenView->setBackGroundPixmap(pix);
-// 		screenView->show();
-// 		close();
+		screenCapture(_shortArea);
+		ImageView *imageview = new ImageView();
+		imageview->setImage(_shotPixmap);
+		imageview->setImageGeometry(_shortArea.toRect());
+		imageview->show();
+		close();
 	}
 }
 
