@@ -5,8 +5,8 @@
 #include <QBitmap>
 #include <QComboBox>
 #include "QTranslator"
-#include <Windows.h>
 #include "qxtglobalshortcut.h"
+#include <qt_windows.h>
 
 #if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
@@ -27,7 +27,7 @@ snappit::snappit(QWidget *parent)
 	_file_path = QStringLiteral(".");
 
 	m_tray = new QSystemTrayIcon(QIcon(":/image/main.ico"), this);
-	m_tray->setToolTip(QStringLiteral("Snappit"));
+	m_tray->setToolTip(tr("Snappit\nscreenshots:F1"));
 	m_tray->show();
 	m_tray->showMessage(QStringLiteral(""), QStringLiteral("Snappit"));
 
@@ -42,7 +42,10 @@ snappit::snappit(QWidget *parent)
 	languages << QStringLiteral("ÖÐÎÄ") << QStringLiteral("English");
 	ui.comboBox_langue->addItems(languages);
 	
-	QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(QKeySequence(QLatin1String("F1")), this);
+	QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(this);
+	if(!shortcut->setShortcut(QKeySequence(QLatin1String("F1"))))
+		m_tray->showMessage(tr("Error"), tr("register shorcut F1 failed"), QSystemTrayIcon::Critical);
+
 	connect(shortcut, &QxtGlobalShortcut::activated, this, &snappit::screenShotCut);
 	connect(ui.pushButton_open,     &QPushButton::clicked, this, &snappit::openImage);
 	connect(ui.pushButton_shortcut, &QPushButton::clicked, this, &snappit::screenShotCut);
@@ -72,6 +75,7 @@ void snappit::languageTranslate()
 {
 	m_prefer->setText(tr("Preference"));
 	m_quit->setText(tr("Quit"));
+	m_tray->setToolTip(tr("Snappit\nscreenshots:F1"));
 }
 
 snappit::~snappit()
@@ -108,7 +112,7 @@ void snappit::openImage()
 
 void snappit::screenShotCut()
 {
-	this->hide();
+	//this->hide();
 	QScreen *screen = QGuiApplication::primaryScreen();
 	QPixmap fullPixmap = screen->grabWindow(0);
 	ScreenView *screenView = new ScreenView();
