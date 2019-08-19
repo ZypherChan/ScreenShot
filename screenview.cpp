@@ -321,6 +321,7 @@ void ScreenView::init()
 	_ellipse_list.clear();
 	_text_list.clear();
 
+	setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 	setCursor(Qt::ArrowCursor);
 	_draw_flag = DrawStatus::WAITDRAW;
 	_curlocation = CursorLocation::INVALID;

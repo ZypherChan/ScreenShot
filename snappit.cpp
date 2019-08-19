@@ -112,7 +112,6 @@ void snappit::openImage()
 
 void snappit::screenShotCut()
 {
-	//this->hide();
 	QScreen *screen = QGuiApplication::primaryScreen();
 	QPixmap fullPixmap = screen->grabWindow(0);
 	ScreenView *screenView = new ScreenView();

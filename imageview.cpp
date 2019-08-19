@@ -46,7 +46,7 @@ void ImageView::initParam()
 
 void ImageView::initUI()
 {
-	setWindowFlags(Qt::FramelessWindowHint | Qt::Tool /*| Qt::WindowStaysOnTopHint*/);
+	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 	setAttribute(Qt::WA_TranslucentBackground, true);
 }
 
