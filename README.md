@@ -30,4 +30,4 @@
 ![](doc/f4.gif)
 ## License
 
-[MIT © ZypherChan.](../LICENSE)
+[MIT © ZypherChan.](./LICENSE)
