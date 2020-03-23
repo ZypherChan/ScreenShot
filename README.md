@@ -2,6 +2,7 @@
 [![](https://img.shields.io/badge/Qt5-ScreenShot-brightgreen.svg)](https://www.qt.io)
 ![badge_platform](https://img.shields.io/badge/platform-Windows-brightgreen.svg)
 ![badge_lincense](https://img.shields.io/badge/license-MIT-blue.svg)
+![windows](https://github.com/ZypherChan/ScreenShot/workflows/windows/badge.svg?branch=master)
 ***
 ## ScreenShot介绍
 - 🔧 基于Qt5开发的windows截图工具，主要是参照Snipaste来做的，可以说是阉割版的Snipaste
