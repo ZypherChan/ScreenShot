@@ -7,15 +7,16 @@ TARGET = qtt
 DESTDIR = ../Win32/Release
 QT += core sql gui widgets
 CONFIG += release
-DEFINES += WIN64 QT_DLL QT_WIDGETS_LIB QT_SQL_LIB
+DEFINES += WIN64 QT_DLL QT_WIDGETS_LIB QT_SQL_LIB BUILD_QXT_GUI
 INCLUDEPATH += ./GeneratedFiles \
     . \
     ./GeneratedFiles/$(ConfigurationName)
-
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/$(ConfigurationName)
 OBJECTS_DIR += release
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(qtt.pri)
+TRANSLATIONS += qtt_en.ts \
+    qtt_zh.ts
 win32:RC_FILE = qtt.rc

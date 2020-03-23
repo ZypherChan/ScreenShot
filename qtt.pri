@@ -7,10 +7,13 @@
 message("You are running qmake on a generated .pro file. This may not work!")
 
 
-HEADERS += ./ColorItem.h \
+HEADERS += ./qxtglobal.h \
+    ./qxtglobalshortcut_p.h \
+    ./ColorItem.h \
     ./LinePaint.h \
     ./RectPaint.h \
     ./PointSizeWidget.h \
+    ./qxtglobalshortcut.h \
     ./TextPaint.h \
     ./screenview.h \
     ./imageview.h \
@@ -21,9 +24,13 @@ SOURCES += ./ColorItem.cpp \
     ./LinePaint.cpp \
     ./main.cpp \
     ./PointSizeWidget.cpp \
+    ./qxtglobalshortcut.cpp \
+    ./qxtglobalshortcut_win.cpp \
     ./RectPaint.cpp \
     ./screenview.cpp \
     ./snappit.cpp \
     ./TextPaint.cpp
 FORMS += ./snappit.ui
+TRANSLATIONS += ./qtt_en.ts \
+    ./qtt_zh.ts
 RESOURCES += qtt.qrc
