@@ -7,13 +7,11 @@ TARGET = qtt
 DESTDIR = ../Win32/Release
 QT += core sql gui widgets
 CONFIG += release
-DEFINES += WIN64 QT_DLL QT_WIDGETS_LIB QT_SQL_LIB GLOG_NO_ABBREVIATED_SEVERITIES GOOGLE_GLOG_DLL_DECL=
+DEFINES += WIN64 QT_DLL QT_WIDGETS_LIB QT_SQL_LIB
 INCLUDEPATH += ./GeneratedFiles \
     . \
-    ./GeneratedFiles/$(ConfigurationName) \
-    $(ProjectDir)/third party/glog/include
-LIBS += -L"$(ProjectDir)/third party/glog/lib/win32" \
-    -lglog
+    ./GeneratedFiles/$(ConfigurationName)
+
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/$(ConfigurationName)
 OBJECTS_DIR += release
