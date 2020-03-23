@@ -5,7 +5,6 @@
 #include "ui_snappit.h"
 #include "imageview.h"
 #include "screenview.h"
-#include "logging.h"
 #include <QSystemTrayIcon>
 #include "QMenu"
 

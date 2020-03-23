@@ -7,6 +7,7 @@
 #include "QTranslator"
 #include "qxtglobalshortcut.h"
 #include <qt_windows.h>
+//#include "logging.h"
 
 #if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
@@ -23,7 +24,7 @@ snappit::snappit(QWidget *parent)
 {
 	ui.setupUi(this);
 	logInit();
-	LOG(INFO) << "snappit::snappit()";
+	//LOG(INFO) << "snappit::snappit()";
 	_file_path = QStringLiteral(".");
 
 	m_tray = new QSystemTrayIcon(QIcon(":/image/main.ico"), this);
@@ -56,19 +57,19 @@ snappit::snappit(QWidget *parent)
 
 void snappit::logInit()
 {
-	QString app_path = QCoreApplication::applicationDirPath();
-	QString log_path = app_path + "\\snappit_log";
-	
-	QDir dir;
-	if (!dir.exists(log_path))
-		dir.mkdir(log_path);
-	
-	FLAGS_log_dir = log_path.toLocal8Bit();
-	google::InitGoogleLogging("snappit");
-	FLAGS_logbufsecs = 0;
-	FLAGS_colorlogtostderr = true;
-	FLAGS_max_log_size = 1024;
-	FLAGS_stop_logging_if_full_disk = true;
+// 	QString app_path = QCoreApplication::applicationDirPath();
+// 	QString log_path = app_path + "\\snappit_log";
+// 	
+// 	QDir dir;
+// 	if (!dir.exists(log_path))
+// 		dir.mkdir(log_path);
+// 	
+// 	FLAGS_log_dir = log_path.toLocal8Bit();
+// 	google::InitGoogleLogging("snappit");
+// 	FLAGS_logbufsecs = 0;
+// 	FLAGS_colorlogtostderr = true;
+// 	FLAGS_max_log_size = 1024;
+// 	FLAGS_stop_logging_if_full_disk = true;
 }
 
 void snappit::languageTranslate()
@@ -90,8 +91,8 @@ snappit::~snappit()
 			imgView = NULL;
 		}
 	}
-	LOG(INFO) << "snappit::~snappit()";
-	google::ShutdownGoogleLogging();
+	//LOG(INFO) << "snappit::~snappit()";
+	//google::ShutdownGoogleLogging();
 }
 
 void snappit::openImage()
@@ -102,7 +103,7 @@ void snappit::openImage()
 	{
 		QFileInfo file(img_path);
 		_file_path = file.absolutePath();
-		LOG(INFO) << img_path.toLocal8Bit().constData();
+		//LOG(INFO) << img_path.toLocal8Bit().constData();
 		ImageView *imgView = new ImageView();
 		imgView->setImage(img_path);
 		imgView->show();
