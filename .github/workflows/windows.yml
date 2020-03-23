@@ -30,7 +30,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Install Qt
-      uses : jurplel/install-qt-action@v2.5.3
+      uses : jurplel/install-qt-action@v2.0.0
       with :
         version: ${{matrix.qt_ver}}
         target: ${{matrix.qt_target}}
