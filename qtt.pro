@@ -11,6 +11,8 @@ DEFINES += WIN64 QT_DLL QT_WIDGETS_LIB QT_SQL_LIB BUILD_QXT_GUI
 INCLUDEPATH += ./GeneratedFiles \
     . \
     ./GeneratedFiles/$(ConfigurationName)
+LIBS += -lkernel32
+LIBS += -luser32
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/$(ConfigurationName)
 OBJECTS_DIR += release
