@@ -30,6 +30,14 @@ jobs:
       targetName: screenshot.exe
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+   #Cache Qt
+    - name: cacheQt
+      id: WindowsCacheQt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt/${{matrix.qt_ver}}/${{matrix.qt_arch_install}}
+        key: ${{ runner.os }}-Qt/${{matrix.qt_ver}}/${{matrix.qt_arch}}
+   # install Qt
     - name: Install Qt
       uses : jurplel/install-qt-action@v2.5.3
       with :
@@ -37,6 +45,7 @@ jobs:
         target: ${{matrix.qt_target}}
         arch: ${{matrix.qt_arch}}
         mirror: http://mirrors.ocf.berkeley.edu/qt/
+        cached: ${{steps.WindowsCacheQt.outputs.cache-hit }}
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v1
       with:
