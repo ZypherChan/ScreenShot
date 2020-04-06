@@ -18,6 +18,7 @@
 this->show();\
 this->activateWindow();
 
+
 snappit::snappit(QWidget *parent)
 	: QWidget(parent), m_translator(nullptr)
 {
