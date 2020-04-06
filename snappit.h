@@ -24,7 +24,6 @@ public:
 	void switchLanguage(const QString &text);
 
 private:
-	void logInit();
 	void languageTranslate();
 
 protected:
