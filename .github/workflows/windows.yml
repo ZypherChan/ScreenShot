@@ -35,6 +35,7 @@ jobs:
         version: ${{matrix.qt_ver}}
         target: ${{matrix.qt_target}}
         arch: ${{matrix.qt_arch}}
+        mirror: http://mirrors.ocf.berkeley.edu/qt/
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v1
       with:
